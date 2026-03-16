@@ -1,9 +1,9 @@
 #!/bin/bash
 
 DESTINY=/sdcard/Music
+MUSIC_FOLDER=$HOME/Music/rmpc_cache/youtube/
 
-
-for file in $HOME/Music/rmpc_cache/youtube/*; do
+for file in $MUSIC_FOLDER/*; do
 	if ! adb get-state 1>/dev/null 2>&1; then
 		echo "Error"
 		exit 1
