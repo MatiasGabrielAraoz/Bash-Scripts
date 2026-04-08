@@ -6,3 +6,5 @@ inotifywait -m $DOWNLOADS_DIR -e create,moved_to,close_write |
 		echo "Se creó un archivo, organizandolo"
 		bash "$HOME/BashScripts/DownloadsManager.sh"
 	done
+
+sleep 30
