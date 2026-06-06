@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 MUSIC_DIR="$HOME/Music/rmpc_cache/youtube/"
 
 if [ $# -eq 0 ]; then

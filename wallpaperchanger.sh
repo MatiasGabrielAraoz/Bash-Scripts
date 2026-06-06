@@ -1,15 +1,25 @@
 #!/usr/bin/env bash
+
+export XDG_RUNTIME_DIR="/run/user/$(id -u)"
+export WAYLAND_DISPLAY="${WAYLAND_DISPLAY:-wayland-0}"
+
 WALLPAPERS_DIR="$HOME/Wallpapers/"
 while true; do
-	if ! swww query; then
+	if ! awww query; then
 		echo "Daemon no detectado"
-		swwws-daemon &
+		awww-daemon &
 		sleep 0.5
 	fi
 
-	wallpapers=($WALLPAPERS_DIR/*)
+	mapfile -t wallpapers < <(find "$WALLPAPERS_DIR" -maxdepth 1 -type f \( -name "*.jpg" -o -name "*.png" -o -name "*.jpeg" -o -name "*.webp" \))
+	if [ ${#wallpapers[@]} -eq 0 ]; then
+		echo "No se encontraron wallpapers en $WALLPAPERS_DIR"
+		sleep 10
+		continue
+	fi
+
 	SELECTED_WALL=$(printf "%s\n" "${wallpapers[@]}" | shuf -n 1)
-	swww img $SELECTED_WALL
+	awww img "$SELECTED_WALL"
 	matugen image "$SELECTED_WALL" \
         -m dark \
         -t scheme-content \
@@ -18,7 +28,9 @@ while true; do
 
 	sleep 1
 
-	systemctl --user restart waybar.service
+	killall -q waybar
+	sleep 0.3
+	waybar %>/dev/null &
 	
 	sleep 600
 done
